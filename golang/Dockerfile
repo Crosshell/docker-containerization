@@ -9,7 +9,7 @@ COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o fizzbuzz
 
-FROM scratch
+FROM gcr.io/distroless/base
 WORKDIR /app
 
 COPY --from=builder /app/fizzbuzz .
