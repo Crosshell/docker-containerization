@@ -1,4 +1,4 @@
-FROM golang:1.22
+FROM golang:1.22 AS builder
 
 WORKDIR /app
 
@@ -7,7 +7,12 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o fizzbuzz
+RUN CGO_ENABLED=0 GOOS=linux go build -o fizzbuzz
+
+FROM scratch
+WORKDIR /app
+
+COPY --from=builder /app/fizzbuzz .
 
 EXPOSE 8080
 
